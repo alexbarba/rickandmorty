@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useMemo } from 'react';
 import Card from './Card';
+import SearchInput from './SearchInput';
 
 const initialState = {
 	favorites: [],
@@ -30,6 +31,15 @@ const Characters = () => {
 		favoriteReducer,
 		initialState
 	);
+	const [search, setSearch] = useState('');
+
+	const filteredUsers = useMemo(
+		() =>
+			characters.filter((user) => {
+				return user.name.toLowerCase().includes(search.toLowerCase());
+			}),
+		[characters, search]
+	);
 
 	useEffect(() => {
 		fetch('https://rickandmortyapi.com/api/character/')
@@ -44,22 +54,37 @@ const Characters = () => {
 				: 'ADD_TO_FAVORITES',
 			payload: favorite,
 		});
+	const handleSearch = (event) => {
+		setSearch(event.target.value);
+	};
 
 	const findCharacterInFavorites = (favorite) =>
 		favorites.favorites.find((character) => character.id === favorite.id);
 
-	console.log(favorites);
 	return (
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-			{characters.map((character) => (
-				<Card
+		<div>
+			<div className="Search">
+				<SearchInput
 					props={{
-						...character,
-						handleFavorite: () => handleFavorite(character),
-						favorite: !!findCharacterInFavorites(character),
+						type: 'text',
+						value: search,
+						onChange: (e) => handleSearch(e),
+						placeholder: 'Buscar',
 					}}
 				/>
-			))}
+			</div>
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+				{filteredUsers.map((character) => (
+					<Card
+						key={character.id}
+						props={{
+							...character,
+							handleFavorite: () => handleFavorite(character),
+							favorite: !!findCharacterInFavorites(character),
+						}}
+					/>
+				))}
+			</div>
 		</div>
 	);
 };

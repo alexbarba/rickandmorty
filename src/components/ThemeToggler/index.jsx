@@ -13,7 +13,6 @@ const ThemeToggler = () => {
 	return (
 		<label>
 			<Toggle
-				defaultChecked={darkMode}
 				checked={darkMode}
 				icons={{
 					checked: <img src="https://i.imgur.com/YXEVwX9.png" alt="c" />,
