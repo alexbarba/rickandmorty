@@ -1,7 +1,17 @@
 import React from 'react';
+import { FaHeart } from 'react-icons/fa';
+import { FaRegHeart } from 'react-icons/fa';
 
 const Card = ({ props }) => {
-	const { name, status, species, gender, image } = props;
+	const {
+		name,
+		status,
+		species,
+		gender,
+		image,
+		handleFavorite,
+		favorite,
+	} = props;
 	return (
 		<div class="max-w-xs justify-self-center rounded overflow-hidden shadow-lg my-2 dark:bg-gray-600 bg-red-100">
 			<img class="w-full" src={image} alt="Sunset in the mountains" />
@@ -12,17 +22,12 @@ const Card = ({ props }) => {
 				<p class="text-grey-darker text-base">Genero: {gender}</p>
 			</div>
 
-			<div class="px-6 py-4">
-				<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">
-					# {status}
-				</span>
-				<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2">
-					# {species}{' '}
-				</span>
-				<span class="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker">
-					# {gender}{' '}
-				</span>
-			</div>
+			<span
+				class="inline-block bg-grey-lighter rounded-full text-xl font-semibold text-grey-darker"
+				onClick={() => handleFavorite()}
+			>
+				{favorite ? <FaHeart /> : <FaRegHeart />}
+			</span>
 		</div>
 	);
 };
