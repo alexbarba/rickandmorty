@@ -1,27 +1,27 @@
 import React from 'react';
 
 const SearchInput = ({ props }) => {
-	const { placeholder, value, onChange, type } = props;
+	const { placeholder, value, onChange, type, ref } = props;
 	return (
-		<div className="relative mr-6 my-2 inline">
+		<div className="relative mr-6 my-2 inline ">
 			<input
 				type={type}
-				className="bg-purple-white shadow rounded border-0 p-3"
+				className="bg-purple-white shadow rounded-full border-0 p-3 dark:bg-gray-600"
 				placeholder={placeholder}
 				value={value}
 				onChange={onChange}
+				ref={ref}
 			/>
-			<div className="absolute mr-4 right-1 top-1 text-purple-lighter">
+			<div className="absolute mr-4 right-1 top-1">
 				<svg
 					version="1.1"
-					className="h-4 text-dark"
+					className="h-4 fill-current"
 					xmlns="http://www.w3.org/2000/svg"
 					xlink="http://www.w3.org/1999/xlink"
 					x="0px"
 					y="0px"
 					viewBox="0 0 52.966 52.966"
 					space="preserve"
-					style={{ enableBackground: 'new 0 0 52.966 52.966' }}
 				>
 					<path
 						d="M51.704,51.273L36.845,35.82c3.79-3.801,6.138-9.041,6.138-14.82c0-11.58-9.42-21-21-21s-21,9.42-21,21s9.42,21,21,21

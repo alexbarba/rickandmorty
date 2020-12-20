@@ -1,6 +1,15 @@
-import React, { useState, useEffect, useReducer, useMemo } from 'react';
+import React, {
+	useState,
+	useReducer,
+	useMemo,
+	useRef,
+	useCallback,
+} from 'react';
 import Card from './Card';
 import SearchInput from './SearchInput';
+import useCharacters from '../hooks/useCharacters';
+
+const API = 'https://rickandmortyapi.com/api/character/';
 
 const initialState = {
 	favorites: [],
@@ -26,12 +35,13 @@ const favoriteReducer = (state, action) => {
 };
 
 const Characters = () => {
-	const [characters, setCharacters] = useState([]);
+	const characters = useCharacters(API);
 	const [favorites, dispatchFavorites] = useReducer(
 		favoriteReducer,
 		initialState
 	);
 	const [search, setSearch] = useState('');
+	const searchRef = useRef(null);
 
 	const filteredUsers = useMemo(
 		() =>
@@ -41,12 +51,6 @@ const Characters = () => {
 		[characters, search]
 	);
 
-	useEffect(() => {
-		fetch('https://rickandmortyapi.com/api/character/')
-			.then((response) => response.json())
-			.then((data) => setCharacters(data.results));
-	}, []);
-
 	const handleFavorite = (favorite) =>
 		dispatchFavorites({
 			type: !!findCharacterInFavorites(favorite)
@@ -54,9 +58,10 @@ const Characters = () => {
 				: 'ADD_TO_FAVORITES',
 			payload: favorite,
 		});
-	const handleSearch = (event) => {
-		setSearch(event.target.value);
-	};
+
+	const handleSearch = useCallback(() => {
+		setSearch(searchRef.current.value);
+	}, []);
 
 	const findCharacterInFavorites = (favorite) =>
 		favorites.favorites.find((character) => character.id === favorite.id);
@@ -68,8 +73,9 @@ const Characters = () => {
 					props={{
 						type: 'text',
 						value: search,
-						onChange: (e) => handleSearch(e),
+						onChange: handleSearch,
 						placeholder: 'Buscar',
+						ref: searchRef,
 					}}
 				/>
 			</div>
