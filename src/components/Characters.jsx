@@ -53,9 +53,7 @@ const Characters = () => {
 
 	const handleFavorite = (favorite) =>
 		dispatchFavorites({
-			type: !!findCharacterInFavorites(favorite)
-				? 'REMOVE_FROM_FAVORITES'
-				: 'ADD_TO_FAVORITES',
+			type: isFavorite(favorite) ? 'REMOVE_FROM_FAVORITES' : 'ADD_TO_FAVORITES',
 			payload: favorite,
 		});
 
@@ -63,8 +61,7 @@ const Characters = () => {
 		setSearch(searchRef.current.value);
 	}, []);
 
-	const findCharacterInFavorites = (favorite) =>
-		favorites.favorites.find((character) => character.id === favorite.id);
+	const isFavorite = (character) => favorites.favorites.includes(character);
 
 	return (
 		<div>
@@ -86,7 +83,7 @@ const Characters = () => {
 						props={{
 							...character,
 							handleFavorite: () => handleFavorite(character),
-							favorite: !!findCharacterInFavorites(character),
+							favorite: isFavorite(character),
 						}}
 					/>
 				))}
